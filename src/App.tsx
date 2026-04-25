@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './layout/navbar';
 import Sidebar from './layout/sidebar';
+import Footer from './layout/footer';
 import HomePage from './pages/HomePage';
 import CategoryPage from './pages/CategoryPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -11,7 +12,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col min-h-screen">
         <Navbar
           isSidebarOpen={isSidebarOpen}
           onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
@@ -25,6 +26,7 @@ export default function App() {
               <Route path="/not-found" element={<NotFoundPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
+            <Footer />
           </main>
         </div>
       </div>
