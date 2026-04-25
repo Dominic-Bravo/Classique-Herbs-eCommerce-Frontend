@@ -21,7 +21,7 @@ export const PRODUCTS: Product[] = [
     description: 'A calming herbal tea with peppermint, chamomile, and lavender for gentle mornings.',
     features: ['Relaxing', 'Caffeine-free', 'Cooling mint'],
     tags: ['wellness', 'morning', 'herbal'],
-    images: [sampleProductImage, sampleProductImage],
+    images: [sampleProductImage, sampleProductImage, sampleProductImage, sampleProductImage],
     badge: 'Best seller',
   },
   {
