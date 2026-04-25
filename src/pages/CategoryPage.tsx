@@ -36,59 +36,97 @@ const CategoryPage = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto py-8">
-      <div className="overflow-hidden rounded-[32px] border border-gray-200 bg-gradient-to-br from-white via-slate-50 to-green-50 shadow-sm">
-        <div className="bg-white px-8 py-10 sm:px-12">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-sm uppercase tracking-[0.35em] text-emerald-700 font-semibold">Category</p>
-              <h1 className="mt-4 text-4xl font-semibold text-slate-900 sm:text-5xl">{category.name}</h1>
-              <p className="mt-4 text-lg leading-8 text-slate-600">{category.description}</p>
-            </div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-700 shadow-sm">
-              {category.icon}
-              {category.name}
+    <div className="max-w-6xl mx-auto py-8 px-4">
+  <div className="overflow-hidden rounded-[32px] border border-gray-200 bg-gradient-to-br from-white via-slate-50 to-green-50 shadow-sm transition-all duration-500">
+    
+    {/* Header Section */}
+    <div className="bg-white/60 backdrop-blur-md px-8 py-10 sm:px-12 border-b border-gray-100">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div className="max-w-3xl">
+          <div className="flex items-center gap-3">
+            <span className="text-xs uppercase tracking-[0.35em] text-emerald-700 font-bold bg-emerald-50 px-3 py-1 rounded-full">
+              Category
             </span>
+            {/* Displaying Icon separately for a cleaner look */}
+            <span className="text-xl">{category.icon}</span>
           </div>
-
-          <div className="mt-10 grid gap-4 lg:grid-cols-[1fr] lg:items-center">
-            <div className="rounded-3xl bg-slate-900/5 px-6 py-5">
-              <p className="text-sm uppercase tracking-[0.25em] text-slate-500">Products available</p>
-              <div className="mt-2 flex items-center gap-3">
-                <span className="text-3xl font-bold text-slate-900">{filteredProducts.length}</span>
-                <span className="text-sm text-slate-500">of {products.length} total</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-6 rounded-3xl border border-gray-200 bg-gray-50 px-4 py-3">
-            <div className="flex items-center gap-3">
-              <Search className="text-gray-400" size={18} />
-              <input
-                type="search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search products..."
-                className="w-full bg-transparent text-slate-900 outline-none placeholder:text-gray-400"
-              />
-            </div>
-          </div>
+          <h1 className="mt-4 text-4xl font-bold text-slate-900 sm:text-5xl tracking-tight">
+            {category.name}
+          </h1>
+          <p className="mt-4 text-lg leading-relaxed text-slate-600">
+            {category.description}
+          </p>
         </div>
 
-        <div className="px-8 py-8 sm:px-12">
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => <ProductCard key={product.id} product={product} />)
-            ) : (
-              <div className="col-span-full rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center text-slate-600">
-                <p className="text-lg font-semibold text-slate-900">No products match your search</p>
-                <p className="mt-3 text-sm">Try a different keyword or clear the search field to explore all items.</p>
-              </div>
-            )}
+        {/* Status Badge */}
+        <div className="flex-shrink-0">
+          <div className="rounded-3xl bg-white border border-slate-200 p-4 shadow-sm flex items-center gap-4">
+            <div className="bg-emerald-500 w-2 h-2 rounded-full animate-pulse" />
+            <div>
+              <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">In Stock</p>
+              <p className="text-xl font-bold text-slate-900">
+                {filteredProducts.length} <span className="text-sm font-normal text-slate-400">Items</span>
+              </p>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Search Bar Refined */}
+      <div className="mt-10 relative group">
+        <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+          <Search className="text-gray-400 group-focus-within:text-emerald-500 transition-colors" size={20} />
+        </div>
+        <input
+          type="search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder={`Search within ${category.name}...`}
+          className="w-full bg-white border border-gray-200 rounded-2xl py-4 pl-12 pr-4 
+                     text-slate-900 shadow-sm outline-none transition-all
+                     focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10
+                     placeholder:text-gray-400"
+        />
+        {searchQuery && (
+          <button 
+            onClick={() => setSearchQuery('')}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+          >
+            Clear
+          </button>
+        )}
+      </div>
     </div>
+
+    {/* Products Grid */}
+    <div className="px-8 py-10 sm:px-12 bg-white/40">
+      <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))
+        ) : (
+          <div className="col-span-full py-20 flex flex-col items-center justify-center rounded-[32px] border-2 border-dashed border-slate-200 bg-slate-50/50 text-center">
+            <div className="bg-white p-4 rounded-full shadow-sm mb-4">
+              <Search className="text-slate-300" size={32} />
+            </div>
+            <h3 className="text-xl font-bold text-slate-900">No matches found</h3>
+            <p className="mt-2 text-slate-500 max-w-xs mx-auto">
+              We couldn't find any products matching "{searchQuery}". 
+            </p>
+            <button 
+              onClick={() => setSearchQuery('')}
+              className="mt-6 text-sm font-bold text-emerald-700 hover:text-emerald-800 underline underline-offset-4"
+            >
+              Show all products
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+
+  </div>
+</div>
   );
 };
 

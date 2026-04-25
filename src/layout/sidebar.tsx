@@ -35,7 +35,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
 
       <div className="p-6 mb-4">
         <h1 className={`font-bold text-xl text-green-700 truncate ${!isOpen ? 'opacity-0' : ''}`}>
-          Classique Herbs
+          Categories
         </h1>
       </div>
 
