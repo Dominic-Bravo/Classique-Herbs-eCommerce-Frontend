@@ -10,7 +10,8 @@ const LoginPage = () => {
   const [email, setEmail] = useState('customer@classique.test');
   const [password, setPassword] = useState('password');
 
-  const from = (location.state as { from?: string } | null)?.from ?? '/account';
+  const routeState = location.state as { from?: string; message?: string } | null;
+  const from = routeState?.from ?? '/account';
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,6 +42,12 @@ const LoginPage = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+          {routeState?.message && (
+            <div className="rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+              {routeState.message}
+            </div>
+          )}
+
           <label className="block">
             <span className="text-sm font-medium text-gray-700">Email</span>
             <input

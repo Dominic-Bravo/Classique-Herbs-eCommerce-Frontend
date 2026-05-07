@@ -1,11 +1,15 @@
+export type UserRole = 'owner' | 'customer' | 'anonymous';
+
 export interface AuthUser {
   id?: string | number;
   name: string;
   email: string;
+  role?: UserRole;
 }
 
 export interface AuthSession {
   token: string;
+  refreshToken?: string;
   user: AuthUser;
 }
 
@@ -16,6 +20,7 @@ const isBrowser = () => typeof window !== 'undefined';
 const fallbackUser: AuthUser = {
   name: 'Classique Customer',
   email: 'customer@classique.test',
+  role: 'customer',
 };
 
 export const getAuthSession = (): AuthSession | null => {
@@ -75,6 +80,7 @@ export const clearAuthSession = () => {
   window.localStorage.removeItem('authToken');
   window.localStorage.removeItem('token');
   window.localStorage.removeItem('access_token');
+  window.localStorage.removeItem('refresh_token');
   window.dispatchEvent(new Event('auth-session-changed'));
 };
 

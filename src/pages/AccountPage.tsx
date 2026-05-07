@@ -25,14 +25,26 @@ const AccountPage = () => {
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-4">
           <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5">
             <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Session</p>
             <p className="mt-2 text-sm font-medium text-gray-800">Stored in localStorage</p>
           </div>
           <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5">
-            <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Token</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Role</p>
+            <p className="mt-2 capitalize text-sm font-medium text-gray-800">
+              {user?.role ?? 'customer'}
+            </p>
+          </div>
+          <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Access</p>
             <p className="mt-2 truncate text-sm font-medium text-gray-800">{session?.token}</p>
+          </div>
+          <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Refresh</p>
+            <p className="mt-2 truncate text-sm font-medium text-gray-800">
+              {session?.refreshToken ? 'Available' : 'Not stored'}
+            </p>
           </div>
         </div>
 
