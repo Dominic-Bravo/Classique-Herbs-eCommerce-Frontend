@@ -11,6 +11,7 @@ import SignupPage from './pages/SignupPage';
 import NotificationsPage from './pages/NotificationsPage';
 import CartPage from './pages/CartPage';
 import AccountPage from './pages/AccountPage';
+import GoogleCallbackPage from './pages/GoogleCallbackPage';
 import RequireAuth from './components/RequireAuth';
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
               <Route path="/category/:slug" element={<CategoryPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
+              <Route path="/google-callback" element={<GoogleCallbackPage />} />
               <Route
                 path="/notifications"
                 element={

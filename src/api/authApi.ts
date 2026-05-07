@@ -3,9 +3,15 @@ import type { AuthSession, UserRole } from '../utils/auth';
 const API_BASE_URL = 'http://127.0.0.1:8000/api';
 
 const AUTH_ENDPOINTS = {
+  google: `${API_BASE_URL}/auth/google/`,
   login: `${API_BASE_URL}/auth/login/`,
   registration: `${API_BASE_URL}/auth/registration/`,
 };
+
+export const GOOGLE_OAUTH_URL =
+  'https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=http://localhost:3000/google-callback&prompt=consent&response_type=code&client_id=1018020452119-vbobeis6f5keoq8kbo5t446flgcu5cap.apps.googleusercontent.com&scope=openid%20email%20profile&access_type=offline';
+
+export const GOOGLE_AUTH_REDIRECT_KEY = 'classique_google_auth_redirect';
 
 export const ROLE_OPTIONS: Array<{ value: UserRole; label: string }> = [
   { value: 'customer', label: 'Customer' },
@@ -27,6 +33,12 @@ export type RegistrationPayload = {
   role: UserRole;
 };
 
+export type GoogleAuthPayload = {
+  access_token?: string;
+  code?: string;
+  id_token?: string;
+};
+
 type AuthUserResponse = {
   pk?: number;
   username?: string;
@@ -38,7 +50,11 @@ type AuthUserResponse = {
 
 type AuthResponse = {
   access?: string;
+  access_token?: string;
   refresh?: string;
+  refresh_token?: string;
+  code?: string;
+  id_token?: string;
   user?: AuthUserResponse;
   detail?: string;
 };
@@ -94,20 +110,23 @@ const toAuthSession = (
   data: AuthResponse | null,
   fallbackUser: { username: string; email: string; role?: UserRole },
 ): AuthSession => {
-  if (!data?.access) {
+  const token = data?.access ?? data?.access_token ?? data?.id_token ?? data?.code;
+
+  if (!token) {
     throw new AuthApiError(data?.detail ?? 'The auth API did not return an access token.');
   }
 
-  const fullName = [data.user?.first_name, data.user?.last_name].filter(Boolean).join(' ');
+  const user = data?.user;
+  const fullName = [user?.first_name, user?.last_name].filter(Boolean).join(' ');
 
   return {
-    token: data.access,
-    refreshToken: data.refresh,
+    token,
+    refreshToken: data?.refresh ?? data?.refresh_token,
     user: {
-      id: data.user?.pk,
-      name: fullName || data.user?.username || fallbackUser.username,
-      email: data.user?.email ?? fallbackUser.email,
-      role: data.user?.role ?? fallbackUser.role,
+      id: user?.pk,
+      name: fullName || user?.username || fallbackUser.username,
+      email: user?.email ?? fallbackUser.email,
+      role: user?.role ?? fallbackUser.role,
     },
   };
 };
@@ -128,5 +147,22 @@ export const loginUser = async (payload: LoginPayload) => {
   return toAuthSession(data, {
     username: payload.username,
     email: payload.email,
+  });
+};
+
+export const authenticateWithGoogle = async (payload: GoogleAuthPayload) => {
+  const hasCredential = Boolean(payload.access_token || payload.code || payload.id_token);
+
+  if (!hasCredential) {
+    throw new AuthApiError('Enter a Google access token, authorization code, or ID token.');
+  }
+
+  const data = await postAuth(AUTH_ENDPOINTS.google, payload, 'Google authentication failed. Please try again.');
+  const user = data?.user;
+
+  return toAuthSession(data, {
+    username: user?.username ?? 'Google User',
+    email: user?.email ?? '',
+    role: user?.role ?? 'customer',
   });
 };

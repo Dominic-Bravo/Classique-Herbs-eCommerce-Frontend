@@ -5,6 +5,7 @@ import { UserPlus } from 'lucide-react';
 import { setAuthSession } from '../utils/auth';
 import type { UserRole } from '../utils/auth';
 import { registerUser, ROLE_OPTIONS } from '../api/authApi';
+import GoogleAuthForm from '../components/GoogleAuthForm';
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -139,6 +140,10 @@ const SignupPage = () => {
             Login
           </Link>
         </p>
+
+        <div className="mt-6">
+          <GoogleAuthForm returnTo="/account" />
+        </div>
       </div>
     </div>
   );

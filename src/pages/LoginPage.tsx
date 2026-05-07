@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LogIn } from 'lucide-react';
 import { setAuthSession } from '../utils/auth';
 import { loginUser } from '../api/authApi';
+import GoogleAuthForm from '../components/GoogleAuthForm';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -111,6 +112,10 @@ const LoginPage = () => {
             Create one
           </Link>
         </p>
+
+        <div className="mt-6">
+          <GoogleAuthForm returnTo={from} />
+        </div>
       </div>
     </div>
   );
