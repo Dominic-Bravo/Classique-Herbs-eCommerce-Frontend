@@ -21,7 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
 
   return (
     <div
-      className={`relative flex flex-col bg-white border-r border-gray-200 h-screen transition-all duration-300 ease-in-out ${
+      className={`relative flex h-full min-h-0 shrink-0 flex-col border-r border-gray-200 bg-white transition-all duration-300 ease-in-out ${
         isOpen ? 'w-64' : 'w-20'
       }`}
     >
@@ -55,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
         </div>
       </div>
 
-      <nav className="flex-1 px-3 space-y-2">
+      <nav className="min-h-0 flex-1 space-y-2 overflow-y-auto px-3 pb-6">
         {filteredCategories.map((category) => (
           <NavLink
             key={category.id}
