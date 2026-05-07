@@ -4,44 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserPlus } from 'lucide-react';
 import { setAuthSession } from '../utils/auth';
 import type { UserRole } from '../utils/auth';
-
-const REGISTRATION_URL = 'http://127.0.0.1:8000/api/auth/registration/';
-
-const ROLE_OPTIONS: Array<{ value: UserRole; label: string }> = [
-  { value: 'customer', label: 'Customer' },
-  { value: 'owner', label: 'Owner' },
-  { value: 'anonymous', label: 'Anonymous' },
-];
-
-type RegistrationResponse = {
-  access?: string;
-  refresh?: string;
-  user?: {
-    pk?: number;
-    username?: string;
-    email?: string;
-    first_name?: string;
-    last_name?: string;
-    role?: UserRole;
-  };
-  detail?: string;
-};
-
-const getErrorMessage = (errorData: unknown) => {
-  if (!errorData || typeof errorData !== 'object') {
-    return 'Registration failed. Please check your details and try again.';
-  }
-
-  return Object.entries(errorData)
-    .map(([field, value]) => {
-      if (Array.isArray(value)) {
-        return `${field}: ${value.join(' ')}`;
-      }
-
-      return `${field}: ${String(value)}`;
-    })
-    .join(' ');
-};
+import { registerUser, ROLE_OPTIONS } from '../api/authApi';
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -65,53 +28,18 @@ const SignupPage = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(REGISTRATION_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password1,
-          password2,
-          role,
-        }),
+      const session = await registerUser({
+        username,
+        email,
+        password1,
+        password2,
+        role,
       });
 
-      const data = (await response.json().catch(() => null)) as RegistrationResponse | null;
-
-      if (!response.ok) {
-        setError(getErrorMessage(data));
-        return;
-      }
-
-      const token = data?.access;
-
-      if (token) {
-        const fullName = [data?.user?.first_name, data?.user?.last_name].filter(Boolean).join(' ');
-
-        setAuthSession({
-          token,
-          refreshToken: data?.refresh,
-          user: {
-            id: data?.user?.pk,
-            name: fullName || data?.user?.username || username,
-            email: data?.user?.email ?? email,
-            role: data?.user?.role ?? role,
-          },
-        });
-
-        navigate('/account', { replace: true });
-        return;
-      }
-
-      navigate('/login', {
-        replace: true,
-        state: { message: data?.detail ?? 'Registration successful. You can now log in.' },
-      });
-    } catch {
-      setError('Could not connect to the registration API. Make sure the backend is running.');
+      setAuthSession(session);
+      navigate('/account', { replace: true });
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Registration failed. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

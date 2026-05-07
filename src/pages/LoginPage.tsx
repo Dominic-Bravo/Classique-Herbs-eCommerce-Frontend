@@ -3,29 +3,39 @@ import type { FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LogIn } from 'lucide-react';
 import { setAuthSession } from '../utils/auth';
+import { loginUser } from '../api/authApi';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [email, setEmail] = useState('customer@classique.test');
-  const [password, setPassword] = useState('password');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const routeState = location.state as { from?: string; message?: string } | null;
   const from = routeState?.from ?? '/account';
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setError('');
+    setIsSubmitting(true);
 
-    setAuthSession({
-      token: 'sample-local-token',
-      user: {
-        id: 'sample-user',
-        name: email.split('@')[0] || 'Classique Customer',
+    try {
+      const session = await loginUser({
+        username,
         email,
-      },
-    });
+        password,
+      });
 
-    navigate(from, { replace: true });
+      setAuthSession(session);
+      navigate(from, { replace: true });
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Login failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -37,7 +47,7 @@ const LoginPage = () => {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Login</h1>
-            <p className="text-sm text-gray-500">Sample local storage auth flow</p>
+            <p className="text-sm text-gray-500">Access your Classique Herb account</p>
           </div>
         </div>
 
@@ -47,6 +57,16 @@ const LoginPage = () => {
               {routeState.message}
             </div>
           )}
+
+          <label className="block">
+            <span className="text-sm font-medium text-gray-700">Username</span>
+            <input
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              className="mt-2 w-full rounded-2xl border border-gray-200 px-4 py-3 outline-none transition focus:border-green-500 focus:ring-4 focus:ring-green-500/10"
+              required
+            />
+          </label>
 
           <label className="block">
             <span className="text-sm font-medium text-gray-700">Email</span>
@@ -70,11 +90,18 @@ const LoginPage = () => {
             />
           </label>
 
+          {error && (
+            <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+              {error}
+            </div>
+          )}
+
           <button
             type="submit"
-            className="flex w-full items-center justify-center rounded-full bg-green-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-green-700"
+            disabled={isSubmitting}
+            className="flex w-full items-center justify-center rounded-full bg-green-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:bg-green-300"
           >
-            Login
+            {isSubmitting ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
