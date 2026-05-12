@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 const NotFoundPage = () => {
   return (
     <div className="max-w-4xl mx-auto py-16 text-center">
-      <div className="inline-flex flex-col gap-6 rounded-3xl border border-gray-200 bg-white p-10 shadow-sm">
-        <h1 className="text-5xl font-bold text-gray-900">404</h1>
-        <p className="text-gray-600 text-lg">
+      <div className="inline-flex flex-col gap-6 rounded-3xl border border-gray-200 bg-white p-10 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <h1 className="text-5xl font-bold text-gray-900 dark:text-slate-100">404</h1>
+        <p className="text-gray-600 text-lg dark:text-slate-400">
           The page you are looking for does not exist. Choose a category from the sidebar or return home.
         </p>
         <Link

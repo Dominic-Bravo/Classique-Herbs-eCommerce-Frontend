@@ -46,13 +46,13 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-6" onClick={onClose}>
       <div
-        className="relative w-full max-w-5xl overflow-hidden rounded-[28px] bg-white shadow-2xl"
+        className="relative w-full max-w-5xl overflow-hidden rounded-[28px] bg-white shadow-2xl dark:bg-slate-900"
         onClick={(event) => event.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 z-20 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white p-3 text-gray-700 shadow-sm transition hover:bg-gray-100"
+          className="absolute right-4 top-4 z-20 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white p-3 text-gray-700 shadow-sm transition hover:bg-gray-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
           aria-label="Close image viewer"
         >
           <X size={22} />
@@ -88,14 +88,14 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({
         </div>
 
         {images.length > 1 && (
-          <div className="flex flex-wrap items-center justify-center gap-3 bg-gray-50 px-6 py-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 bg-gray-50 px-6 py-4 dark:bg-slate-900">
             {images.map((image, index) => (
               <button
                 key={`${image}-${index}`}
                 type="button"
                 onClick={() => onSelect(index)}
                 className={`h-16 w-16 overflow-hidden rounded-3xl border p-1 transition ${
-                  index === activeIndex ? 'border-green-500 ring-2 ring-green-200' : 'border-transparent hover:ring-2 hover:ring-gray-200'
+                  index === activeIndex ? 'border-green-500 ring-2 ring-green-200 dark:ring-emerald-700' : 'border-transparent hover:ring-2 hover:ring-gray-200 dark:hover:ring-slate-700'
                 }`}
               >
                 <img src={image} alt={`Thumbnail ${index + 1}`} className="h-full w-full object-cover" />

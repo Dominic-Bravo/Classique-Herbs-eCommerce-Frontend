@@ -41,15 +41,15 @@ const GoogleCallbackPage = () => {
 
   return (
     <div className="mx-auto max-w-md py-8">
-      <div className="rounded-3xl border border-gray-200 bg-white p-8 text-center shadow-sm">
-        <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-green-100 text-green-700">
+      <div className="rounded-3xl border border-gray-200 bg-white p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-green-100 text-green-700 dark:bg-emerald-950 dark:text-emerald-300">
           <KeyRound size={22} />
         </div>
 
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">
           {error ? 'Google login failed' : 'Finishing Google login'}
         </h1>
-        <p className="mt-3 text-sm leading-6 text-gray-500">
+        <p className="mt-3 text-sm leading-6 text-gray-500 dark:text-slate-400">
           {error || 'Please wait while we connect your Google account.'}
         </p>
 

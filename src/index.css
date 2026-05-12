@@ -1,1 +1,62 @@
+/* @import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+}
+
+:root.dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: #f9fafb;
+}
+
+.dark body {
+  background: #020617;
+}
+
+@keyframes theme-wave {
+  from {
+    clip-path: circle(0 at var(--wave-x) var(--wave-y));
+  }
+  to {
+    clip-path: circle(150vmax at var(--wave-x) var(--wave-y));
+  }
+}
+
+.theme-wave {
+  animation: theme-wave 650ms ease-out forwards;
+  clip-path: circle(0 at var(--wave-x) var(--wave-y));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-wave {
+    animation-duration: 1ms;
+  }
+} */
+
+
 @import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+}
+
+:root.dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: #f9fafb;
+}
+
+.dark body {
+  background: #020617;
+}

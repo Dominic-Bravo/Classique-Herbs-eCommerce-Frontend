@@ -36,7 +36,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         />
       )}
 
-      <article className="relative group overflow-hidden rounded-[32px] border border-gray-200 bg-gradient-to-b from-white to-slate-50 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+      <article className="relative group overflow-hidden rounded-[32px] border border-gray-200 bg-gradient-to-b from-white to-slate-50 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-800 dark:from-slate-900 dark:to-slate-950">
   
         {/* Badge logic remains strong */}
         {product.badge?.trim() && product.badge.trim().toLowerCase() !== 'none' && (
@@ -52,7 +52,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
             className="relative w-full overflow-hidden rounded-t-[32px] block"
             aria-label={`Open ${product.name} image viewer`}
         >
-            <div className="relative h-64 overflow-hidden bg-slate-100">
+            <div className="relative h-64 overflow-hidden bg-slate-100 dark:bg-slate-800">
             <img
                 src={previewImage}
                 alt={product.name}
@@ -64,13 +64,13 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
 
         {/* Thumbnails */}
         {product.images.length > 1 && (
-            <div className="grid grid-cols-2 gap-2 border-y border-gray-200 bg-white px-4 py-3">
+            <div className="grid grid-cols-2 gap-2 border-y border-gray-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
             {product.images.slice(0, 2).map((image, index) => (
                 <button
                 key={`${product.id}-thumb-${index}`}
                 type="button"
                 onClick={() => openViewer(index)}
-                className="overflow-hidden rounded-2xl border border-gray-100 transition hover:border-emerald-400"
+                className="overflow-hidden rounded-2xl border border-gray-100 transition hover:border-emerald-400 dark:border-slate-800"
                 >
                 <img src={image} alt="" className="h-16 w-full object-cover" />
                 </button>
@@ -82,10 +82,10 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         <div className="space-y-5 p-6">
             <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-                <h3 className="text-xl font-bold text-slate-900">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
                 {product.name}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600 line-clamp-2">
+                <p className="mt-2 text-sm leading-relaxed text-slate-600 line-clamp-2 dark:text-slate-400">
                 {product.description}
                 </p>
             </div>
@@ -97,6 +97,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
                     inline-flex items-center justify-center rounded-2xl px-4 py-2 
                     min-w-[90px] text-lg font-bold
                     bg-emerald-50 text-emerald-700 border border-emerald-100
+                    dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800
                     transition-all duration-300 cursor-pointer
                     hover:bg-emerald-600 hover:text-white hover:shadow-lg hover:-translate-y-1
                 "
@@ -115,8 +116,10 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
                     inline-flex items-center justify-center rounded-full px-3 py-1.5 
                     text-[10px] font-bold uppercase tracking-wider
                     bg-slate-100 text-slate-600 
+                    dark:bg-slate-800 dark:text-slate-300
                     transition-all duration-200
                     hover:bg-slate-200 hover:text-slate-900 cursor-default
+                    dark:hover:bg-slate-700 dark:hover:text-slate-100
                 "
                 >
                 {feature}

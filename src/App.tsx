@@ -19,14 +19,14 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="flex h-screen flex-col overflow-hidden">
+      <div className="flex h-screen flex-col overflow-hidden bg-gray-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
         <Navbar
           isSidebarOpen={isSidebarOpen}
           onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
         />
         <div className="flex min-h-0 flex-1 overflow-hidden">
           <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen((prev) => !prev)} />
-          <main className="min-h-0 flex-1 overflow-y-auto bg-gray-50 p-8">
+          <main className="min-h-0 flex-1 overflow-y-auto bg-gray-50 p-4 transition-colors duration-300 dark:bg-slate-950 sm:p-8">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/category/:slug" element={<CategoryPage />} />
